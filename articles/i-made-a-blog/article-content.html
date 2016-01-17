@@ -1,0 +1,138 @@
+<article>
+        
+  <header>
+    <a href="articles/i-made-a-blog"><h2>I made a blog.</h2></a>
+    <h3>I made it from scratch.</h3>
+  </header>
+
+  <h4>Why</h4>
+
+  <p>I spend much of my alone-time doing creative things, but I don't have a good outlet for the things I create.</p>
+
+  <p>This has an effect on my motivation to finish side-projects. My hope is that this page will give my projects a destination, and lead me to complete more of them.</p>
+
+  <p>This post is about my first such project: this blog, and the tiny platform it runs on. Not my sexiest endeavour, but it's a fun exercise in useful minimalism.</p>
+
+  <h4>How</h4>
+  
+  <p>As with any website, I started with the design. I design in Sketch. Here's the first draft.</p>
+
+  <figure>
+    <img src="/articles/i-made-a-blog/design.png" />
+    <figcaption>Look familiar?</figcaption>
+  </figure>
+
+  <p>Then I followed my standard static site workflow: all markup first, then CSS. The CSS is just CSS. I'm a big fan of SCSS, but this is a tiny site that doesn't need an extra compilation step.</p>
+
+  <p>Next I set up the server. The server doesn't do much. 99.9% of the time, it just serves HTML documents.</p>
+
+  <h4>Sam, this isn't a very interesting story.</h4>
+
+  <p>If there's one thing I've learned in the last few years of head-down startup web development, it's that interesting solutions cause interesting problems.</p>
+
+  <p>&ldquo;Interesting problems&rdquo; are often exactly what I'm in the mood for, frankly, but this is a blog about finished creative works. At the time of writing, <strong>my guiding belief about creative works is that the process that builds them should be respectful</strong>. Respectful to the creator. Respectful to others that might examine it. Respectful to the work itself.</p>
+
+  <p>The joy that comes from building something complicated, something hard to build, is very short-lived for me. In the concluding moment of a big project, my head at the center of a web of ideas and abstractions, the feeling of last piece falling into place is glorious.</p>
+
+  <p>The next day, though, I'll find myself reviewing code and feeling anything but glory. What does that bit even do? Did I really write this?</p>
+
+  <p>I've found a lasting glory in respectful solutions. Solutions that convert the scary monster into a friendly monster, rather than employing equally scary measures to hack it down.</p>
+
+  <h4>Taming the Blogbeast</h4>
+
+  <p>A blogging platform is hardly a big scary monster. At worst, it's a medium-sized marginally-unpleasant swamp animal. Here are some things my blogbeast needs to do:</p>
+
+  <ul>
+    <li>Store permalinks to articles</li>
+    <li>Run on something a bit richer than plaintext</li>
+    <li>Present pages of several articles</li>
+    <li>Allow me to add new articles without doing a lot of work</li>
+  </ul>
+
+  <p>...and that's about it. I don't think I need Wordpress for this.</p>
+
+  <p>A few of these are already handled. &ldquo;Store permalinks to articles&rdquo; is free if I just use the filesystem to resolve URLs:</p>
+
+  <figure>
+    <img src="/articles/i-made-a-blog/folder-structure.png" />
+    <figcaption>Note to self: re-take this screenshot</figcaption>
+  </figure>
+
+  <p>&ldquo;Run on something a bit richer than plaintext&rdquo; is what would stop a non-web-developer from using my platform. But I don't mind writing HTML blog articles! No fancy custom text editor for me.</p>
+
+  <p>So that just leaves &ldquo;Present pages of articles&rdquo; and &ldquo;Allow me to add new articles without doing a lot of work.&rdquo;</p>
+
+  <h4>Pages and Easy Articles</h4>
+
+  <p>Let's say each page of articles has three articles on it. Let's say I have six articles.</p>
+
+  <figure>
+    <pre>
+PAGE 1          PAGE 2
+Article 1       Article 4
+Article 2       Article 5
+Article 3       Article 6</pre>
+  </figure>
+
+  <p>Cool. If I want to add pagination to my website, I just have to add articles 1, 2, and 3 to page-1.html, and articles 4, 5, and 6 to page-2.html.</p>
+
+  <p>When I add a new article, we get a new page, and the old pages change:</p>
+
+  <figure>
+    <pre>
+PAGE 1          PAGE 2          PAGE 3 
+New Article!    Article 3       Article 6
+Article 1       Article 4       
+Article 2       Article 5       </pre>
+  </figure>
+
+  <p>Now I need to re-make page-1.html and page-2.html, and add page-3.html. Doing that by hand would not satisfy &ldquo;add new articles without doing a lot of work.&rdquo;</p>
+
+  <p>Thankfully we have a computer. We just need three things from the computer:</p>
+
+  <ul>
+    <li>An ordered list of articles</li>
+    <li>Some way to slice the list into threes</li>
+    <li>Some way to put three articles into a single document</li>
+  </ul>
+
+  <p>&ldquo;An ordered list of articles&rdquo; is a database. Time to install MySQL! Just kidding. Let's use a text file.</p>
+
+  <figure>
+    <figcaption><strong>articles-database</strong> (Plaintext)</figcaption>
+    <pre>/articles/new-article
+/articles/article-1
+/articles/article-2
+/articles/article-3
+/articles/article-4
+/articles/article-5
+/articles/article-6</pre>
+  </figure>
+
+  <p>The directories I'm referencing in this text file will contain a file <strong>article.html</strong> which in turn contains the &lt;article&gt; tag and its contents.</p>
+
+  <p>&ldquo;Some way to slice the list into consecutive threes&rdquo; sounds like programming. Let's come back to that. But &ldquo;some way to put three articles into a single document,&rdquo; is easy! That's just cat!</p>
+
+  <figure>
+    <pre>cat 
+/template/page-header.html
+/articles/new-article/article.html 
+/articles/article-1/article.html 
+/articles/article-2/article.html
+/template/page-footer.html
+> page-1.html</pre>
+  </figure>
+
+  <p>cat can also build the permalink index.html file that sits in each article directory:</p>
+
+  <figure>
+    <pre>cat 
+/template/single-header.html
+/articles/new-article/article.html 
+/template/single-footer.html
+> /articles/new-article/index.html</pre>
+  </figure>
+
+  <footer>I wrote this 2016-1-17, in Montreal.</footer>
+
+</article>
