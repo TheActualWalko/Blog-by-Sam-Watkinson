@@ -4,8 +4,8 @@ database=`cat articles-database`
 publicDir="public"
 
 permaSuffix="/index.html"
-previewSuffix="/preview-content.html"
-articleSuffix="/article-content.html"
+previewDocName="preview-content.html"
+articleDocName="/article-content.html"
 
 permaTopTemplate="templates/perma-top.html"
 permaBottomTemplate="templates/perma-bottom.html"
@@ -14,19 +14,19 @@ pageBottomTemplate="templates/page-bottom.html"
 
 articlesPerPage="3"
 
-lastArticle=""
-lastLines=""
+currentArticleDir=""
+articlesForCurrentPage=""
 articleIndex=0
 indexPageWritten=0
 
 buildIndexPage(){
-  `cat $pageTopTemplate $lastLines$pageBottomTemplate > $publicDir/index.html`
+  `cat $pageTopTemplate $articlesForCurrentPage$pageBottomTemplate > $publicDir/index.html`
 }
 
-buildPage(){
+buildMultiArticleDocument(){
   let "pageIndex += 1"
   `mkdir $publicDir/page/$pageIndex`
-  `cat $pageTopTemplate $lastLines$pageBottomTemplate > $publicDir/page/$pageIndex/index.html`
+  `cat $pageTopTemplate $articlesForCurrentPage$pageBottomTemplate > $publicDir/page/$pageIndex/index.html`
 
   if [ $indexPageWritten -eq 0 ]; then
     buildIndexPage
@@ -34,24 +34,26 @@ buildPage(){
   fi
 }
 
-buildPermalink(){
-  `cat $permaTopTemplate $lastArticle$articleSuffix $permaBottomTemplate > $publicDir/$lastArticle$permaSuffix`
+buildPermalinkDocument(){
+  `cat $permaTopTemplate $currentArticleDir$articleDocName $permaBottomTemplate > $publicDir/$currentArticleDir$permaSuffix`
 }
 
 render(){
-  for line in $database; do
-    lastArticle=$line;
-    buildPermalink
-    lastLines="$lastLines$lastArticle$previewSuffix "
+  for articleDir in $database; do
+    currentArticleDir=$articleDir;
+    buildPermalinkDocument
+    articlesForCurrentPage="$articlesForCurrentPage$currentArticleDir/$previewDocName "
     let "articleIndex += 1"
     if [ `expr $articleIndex % $articlesPerPage` -eq 0 ]; then
-      buildPage $lastLines
-      lastLines=""
+      buildMultiArticleDocument
+      articlesForCurrentPage=""
     fi
   done
-  if [ lastLines != "" ]; then
-    buildPage
-    lastLines=""
+
+  # build the remainder articles
+  if [ articlesForCurrentPage != "" ]; then
+    buildMultiArticleDocument
+    articlesForCurrentPage=""
   fi
 }
 
