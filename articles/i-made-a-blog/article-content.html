@@ -15,32 +15,28 @@
 
   <h4>How</h4>
   
-  <p>As with any website, I started with the design. I design in Sketch. Here's the first draft.</p>
+  <p>I started with the design. I design in <a href="https://www.sketchapp.com/">Sketch</a>. Here's the first draft.</p>
 
   <figure>
     <img src="/articles/i-made-a-blog/design.png" />
     <figcaption>Look familiar?</figcaption>
   </figure>
 
-  <p>Then I followed my standard static site workflow: all markup first, then CSS. The CSS is just CSS. I'm a big fan of SCSS, but this is a tiny site that doesn't need an extra compilation step.</p>
+  <p>Then I followed my standard static site workflow: all markup first, then CSS. The CSS is just CSS. I'm a big fan of <a href="http://sass-lang.com/">SASS/SCSS</a>, but this is a tiny site that doesn't need an extra compilation step.</p>
 
-  <p>Next I set up the server. The server doesn't do much. 99.9% of the time, it just serves HTML documents.</p>
+  <p>Next I set up the server. The server doesn't do much. 99.9% of the time, it just serves HTML documents. The other 0.1% of the time it has some new documents put on it.</p>
 
   <h4>Sam, this isn't a very interesting story.</h4>
 
   <p>If there's one thing I've learned in the last few years of head-down startup web development, it's that interesting solutions cause interesting problems.</p>
 
-  <p>&ldquo;Interesting problems&rdquo; are often exactly what I'm in the mood for, frankly, but this is a blog about finished creative works. At the time of writing, <strong>my guiding belief about creative works is that the process that builds them should be respectful</strong>. Respectful to the creator. Respectful to others that might examine it. Respectful to the work itself.</p>
+  <p>&ldquo;Interesting problems&rdquo; are often exactly what I'm in the mood for, frankly, but this is a blog about finished creative works. At the time of writing, my guiding belief about creative works is that the process that builds them should be <strong>respectful</strong>. Respectful to the creator. Respectful to others that might examine it. Respectful to the work itself.</p>
 
-  <p>The joy that comes from building something complicated, something hard to build, is very short-lived for me. In the concluding moment of a big project, my head at the center of a web of ideas and abstractions, the feeling of last piece falling into place is glorious.</p>
-
-  <p>The next day, though, I'll find myself reviewing code and feeling anything but glory. What does that bit even do? Did I really write this?</p>
-
-  <p>I've found a lasting glory in respectful solutions. Solutions that convert the scary monster into a friendly monster, rather than employing equally scary measures to hack it down.</p>
+  <p>Unlike <em>interesting solutions</em> - the kind that give you the intense burst of last-piece-falling-into-place satisfaction at the end of a big project - I've found a lasting satisfaction in <em>respectful solutions</em>. Solutions that convert the scary monster into a friendly monster, rather than employing equally scary measures to hack it down.</p>
 
   <h4>Taming the Blogbeast</h4>
 
-  <p>A blogging platform is hardly a big scary monster. At worst, it's a medium-sized marginally-unpleasant swamp animal. Here are some things my blogbeast needs to do:</p>
+  <p>Back to the subject at hand: this blog. A blogging platform is hardly a big scary monster. At worst, it's a medium-sized marginally-unpleasant swamp animal. Here are some things my blogbeast needs to do:</p>
 
   <ul>
     <li>Store permalinks to articles</li>
@@ -54,8 +50,8 @@
   <p>A few of these are already handled. &ldquo;Store permalinks to articles&rdquo; is free if I just use the filesystem to resolve URLs:</p>
 
   <figure>
-    <img src="/articles/i-made-a-blog/folder-structure.png" />
-    <figcaption>Note to self: re-take this screenshot</figcaption>
+    <img id="folder-structure" src="/articles/i-made-a-blog/folder-structure.png" />
+    <figcaption><a href="http://www.sam-watkinson.com/articles/i-made-a-blog#folder-structure">sam-watkinson.com/articles/i-made-a-blog</a></figcaption>
   </figure>
 
   <p>&ldquo;Run on something a bit richer than plaintext&rdquo; is what would stop a non-web-developer from using my platform. But I don't mind writing HTML blog articles! No fancy custom text editor for me.</p>
@@ -109,26 +105,26 @@ Article 2       Article 5       </pre>
 /articles/article-6</pre>
   </figure>
 
-  <p>The directories I'm referencing in this text file will contain a file <strong>article.html</strong> which in turn contains the &lt;article&gt; tag and its contents.</p>
+  <p>The directories I'm referencing in this text file will contain a file <strong>article.html</strong> which in turn contains article's contents.</p>
 
   <p>&ldquo;Some way to slice the list into consecutive threes&rdquo; sounds like programming. Let's come back to that. But &ldquo;some way to put three articles into a single document,&rdquo; is easy! That's just cat!</p>
 
   <figure>
-    <figcaption>Bash</figcaption>
+    <figcaption><strong>render.sh</strong> (Bash)</figcaption>
     <pre>cat $header $article1 $article2 $article3 $footer > page-1.html</pre>
   </figure>
 
   <p>cat can also build the permalink index.html file that sits in each article directory:</p>
 
   <figure>
-    <figcaption>Bash</figcaption>
+    <figcaption><strong>render.sh</strong> (Bash)</figcaption>
     <pre>cat $header $newArticle $footer > /articles/new-article/index.html</pre>
   </figure>
 
   <p>With that sorted out, I just need to loop over my database and build the multi-article pages.</p>
 
   <figure>
-    <figcaption>Bash</figcaption>
+    <figcaption><strong>render.sh</strong> (Bash)</figcaption>
     <pre>render(){
   for articleDir in $database; do
     currentArticleDir=$articleDir;
@@ -150,6 +146,21 @@ Article 2       Article 5       </pre>
   fi
 }</pre>
   </figure>
+
+  <p>Eventually I'll need to insert numbered links to pages. I'll cross that bridge when I get to article #4.</p>
+
+  <h4>Independent</h4>
+
+  <p>I'm tempted to do the rendering in something a little more fresh, like Python, but right now the only development dependencies I have are a text editor and unix.</p>
+
+  <p>This means if I lose this laptop in a fire, I can borrow nearly any non-windows computer, download a zip from GitHub, and write a new blog post without having to install anything. I also run a very low risk of my tools becoming obsolete.</p>
+
+
+  <h4>Clientside, Serverside, Developerside</h4>
+
+  <p>Things are even better when we're talking about the server dependencies. Since all of the rendering happens on my development machine, the server only needs to be able to serve documents. In a race between installing Wordpress and installing this blog, this blog wins before anyone reaches for the starting gun.</p>
+
+  <p>Of course this wouldn't scale to anything one might call an 'app,' but I'm not making an app. I'm making a slowly growing static site. Respectfully.</p>
 
   <footer>I wrote this January 17th, 2016. I was in Montreal.</footer>
 
