@@ -19,7 +19,7 @@
 
   <p>There is no server-side rendering. There is no content management system. The only things that runs on the server are the operating system and the webserver.</p>
 
-  <p>There is no client-side behaviour. There isn't even any javascript!</p>
+  <p>There is no client-side behaviour. No javascript.</p>
 
   <figure>
     <figcaption><strong>articles/i-made-a-blog/article-content.html</strong> (HTML)</figcaption>
@@ -42,11 +42,11 @@
 &lt;/article&gt;</pre>
   </figure>
 
-  <p>Articles are written in raw HTML. I don't use classes to style the contents of articles, which makes writing articles more streamlined. Article contents are compiled into the multi-article pages and permalink pages that make up the site.</p>
+  <p>Articles are written in raw HTML. All article styling is done without classes, which makes writing raw HTML pretty smooth. Article contents are compiled into the multi-article pages and permalink pages that make up the site.</p>
 
   <h4>Permalinks and Multi-Article Pages</h4>
 
-  <p>This is a permalink page. It contains a single article and has a nice URL. This is accomplished by taking advantage of default webserver index.html behaviour.</p>
+  <p>This is a permalink page. It contains a single article and has a nice URL. URLs are made nice thanks to the way standard webservers handle index.html by default.</p>
 
   <figure>
     <img src="/articles/i-made-a-blog/folder-structure.png" alt="Article folder structure" />
@@ -57,21 +57,31 @@
 
   <h4>Compilation</h4>
 
-  <p>There is a rendering step, but it doesn't happen on the server - it happens on my development machine!</p>
+  <p>There is a rendering step, but it doesn't happen on the server - it happens on my development machine.</p>
 
-  <p>The content of this article, for example, sits in <strong>/articles/i-made-a-blog/article-content.html</strong>. A bash script concatenates it into the site template, and saves the resulting index.html into the permalink folder.</p>
+  <p>The content of this article, for example, sits in <strong>/articles/i-made-a-blog/article-content.html</strong>. A bash script concatenates it into the site template, and saves the resulting index.html into the output permalink folder.</p>
 
-  <p>A shoty copy of this article sits in <strong>/articles/i-made-a-blog/article-preview.html</strong>. The same script concatenates that preview and neighbouring article previews into multi-article pages like the homepage.</p>
+  <p>A short copy of this article sits in <strong>/articles/i-made-a-blog/article-preview.html</strong>. The same script concatenates that preview and neighbouring article previews into multi-article pages, like the homepage.</p>
 
-  <p>Here's the meat of the script. The rest is cleanup and running cat to stick things together.</p>
-
+  <p>Here's the meat of the script. I've skipped the preamble and cleanup.</p>
 
   <figure>
     <figcaption><strong>render.sh</strong> (Bash)</figcaption>
-    <pre>render(){
+    <pre>buildCurrentPermalinkDocument(){
+  file=$currentDir/article-content.html
+  `cat $pageStart $file $pageEnd > $currentDir/index.html`
+}
+
+buildCurrentMultiArticleDocument(){
+  let "pagenum += 1"
+  `mkdir page/$pagenum`
+  `cat $pageStart $currentArticles $pageEnd > page/$pagenum/index.html`
+}
+
+render(){
   for articleDir in $database; do
-    currentArticle=$articleDir;
-    currentArticles="$currentArticles $currentArticle/article-preview.html"
+    currentDir=$articleDir;
+    currentArticles="$currentArticles $currentDir/article-preview.html"
   
     let "articleIndex += 1"
     if [ `expr $articleIndex % $articlesPerPage` -eq 0 ]; then
@@ -90,9 +100,11 @@
 }</pre>
   </figure>
 
+  <p>This spits out the complete state of my blog! Then rsync moves it to the server, and I'm done.</p>
+
   <h4>Independent</h4>
 
-  <p>I'm tempted to do the rendering in something a little more fresh, like Python, but right now the only development dependencies I have are a text editor and unix.</p>
+  <p>I'm tempted to do the rendering in something a little more fresh, like Python. However, right now the only development dependencies I have are a text editor and unix.</p>
 
   <p>This means if I lose this laptop in a fire, I can borrow nearly any non-windows computer, download a zip from GitHub, and write a new blog post without having to install anything. Another benefit is the low risk of my tools becoming obsolete.</p>
 
@@ -101,7 +113,7 @@
 
   <p>Things are even better when we're talking about the server dependencies. Since all of the rendering happens on my development machine, the server only needs to be able to serve documents. In a race between installing Wordpress and installing this blog, this blog wins before anyone reaches for the starting gun.</p>
 
-  <p>Of course this wouldn't scale to anything one might call an 'app,' but I'm not making an app. I'm making a slowly growing static site.</p>
+  <p>Of course this wouldn't scale to anything one might call an &ldquo;app,&rdquo; but I'm not making an app! I'm making a slowly growing static site.</p>
 
   <footer>I wrote this January 18th, 2016. I was in Montreal.</footer>
 
