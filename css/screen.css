@@ -252,6 +252,7 @@ article figure+h4{
 }
 
 article footer{
+  margin-top:30px;
   color:#80818c;
   font-style:italic;
 }
