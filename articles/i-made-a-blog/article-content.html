@@ -14,123 +14,64 @@
   <p>This post is about my first such project: this blog, and the tiny platform it runs on. I have taken on more invigorating projects, but few so pleasingly minimal.</p>
 
   <h4>How</h4>
-  
-  <p>I started with the design. I design in <a href="https://www.sketchapp.com/">Sketch</a>. Here's the first draft.</p>
+
+  <p>This blog is a static site.</p>
+
+  <p>There is no server-side rendering. There is no content management system. The only things that runs on the server are the operating system and the webserver.</p>
+
+  <p>There is no client-side behaviour. There isn't even any javascript!</p>
 
   <figure>
-    <img src="/articles/i-made-a-blog/design.png" />
-    <figcaption>Look familiar?</figcaption>
-  </figure>
-
-  <p>Then I followed my standard static site workflow: all markup first, then CSS. The CSS is just CSS. I'm a big fan of <a href="http://sass-lang.com/">SASS/SCSS</a>, but this is a tiny site that doesn't need an extra compilation step.</p>
-
-  <p>Next I set up the server. The server doesn't do much. 99.9% of the time, it just serves HTML documents. The other 0.1% of the time it has some new documents put on it.</p>
-
-  <h4>Sam, this isn't a very interesting story.</h4>
-
-  <p>If there's one thing I've learned in the last few years of head-down startup web development, it's that interesting solutions cause interesting problems.</p>
-
-  <p>&ldquo;Interesting problems&rdquo; are often exactly what I'm in the mood for, frankly, but this is a blog about finished creative works. At the time of writing, my guiding belief about creative works is that the process that builds them should be <strong>respectful</strong>. Respectful to the creator. Respectful to others that might examine it. Respectful to the work itself.</p>
-
-  <p>Unlike <em>interesting solutions</em> - the kind that give you the intense burst of last-piece-falling-into-place satisfaction at the end of a big project - I've found a lasting satisfaction in <em>respectful solutions</em>. Solutions that convert the scary monster into a friendly monster, rather than employing equally scary measures to hack it down.</p>
-
-  <p>Anyway, here comes the fun part:</p>
-
-  <h4>Taming the Blogbeast</h4>
-
-  <p>A blogging platform is hardly a big scary monster. At worst, it's a medium-sized marginally-unpleasant swamp animal. Here are some things my blogbeast needs to do:</p>
-
-  <ul>
-    <li>Store permalinks to articles</li>
-    <li>Run on something a bit richer than plaintext</li>
-    <li>Present pages of several articles</li>
-    <li>Allow me to add new articles without doing a lot of work</li>
-  </ul>
-
-  <p>...and that's about it. I don't think I need Wordpress for this.</p>
-
-  <p>A few of these are already handled. &ldquo;Store permalinks to articles&rdquo; is free if I just use the filesystem and default &ldquo;index.html&rdquo; behaviour to resolve URLs:</p>
-
-  <figure>
-    <img id="folder-structure" src="/articles/i-made-a-blog/folder-structure.png" />
-    <figcaption><a href="http://www.sam-watkinson.com/articles/i-made-a-blog#folder-structure">sam-watkinson.com/articles/i-made-a-blog</a></figcaption>
-  </figure>
-
-  <p>&ldquo;Run on something a bit richer than plaintext&rdquo; is what would stop a non-web-developer from using my platform. But I don't mind writing HTML blog articles! There are no classes anywhere in the article CSS, so writing raw HTML is quite easy.</p>
-
-  <p>So that just leaves &ldquo;Present pages of articles&rdquo; and &ldquo;Allow me to add new articles without doing a lot of work.&rdquo;</p>
-
-  <h4>Pages and Easy Articles</h4>
-
-  <p>Let's say each page of articles has three articles on it. Let's say I have six articles.</p>
-
-  <figure>
+    <figcaption><strong>articles/i-made-a-blog/article-content.html</strong> (HTML)</figcaption>
     <pre>
-PAGE 1          PAGE 2
-Article 1       Article 4
-Article 2       Article 5
-Article 3       Article 6</pre>
+&lt;article&gt;
+        
+  &lt;header&gt;
+    &lt;a href="/articles/i-made-a-blog"&gt;&lt;h2&gt;I made a blog.&lt;/h2&gt;&lt;/a&gt;
+    &lt;h3&gt;I made it from scratch.&lt;/h3&gt;
+  &lt;/header&gt;
+
+  &lt;h4&gt;Why&lt;/h4&gt;
+
+  &lt;p&gt;I spend much of my alone-time doing creative things, but I don't have a good outlet for the things I create.&lt;/p&gt;
+
+  &lt;p&gt;This has an effect on my motivation to finish side-projects. My hope is that this page will give my projects a destination, and lead me to complete more of them.&lt;/p&gt;
+
+  &lt;p&gt;This post is about my first such project: this blog, and the tiny platform it runs on. I have taken on more invigorating projects, but few so pleasingly minimal.&lt;/p&gt;
+
+&lt;/article&gt;</pre>
   </figure>
 
-  <p>Cool. If I want to add pagination to my website, I just have to add articles 1, 2, and 3 to page-1.html, and articles 4, 5, and 6 to page-2.html.</p>
+  <p>Articles are written in raw HTML. I don't use classes to style the contents of articles, which makes writing articles more streamlined. Article contents are compiled into the multi-article pages and permalink pages that make up the site.</p>
 
-  <p>When I add a new article, we get a new page, and the old pages change:</p>
+  <h4>Permalinks and Multi-Article Pages</h4>
+
+  <p>This is a permalink page. It contains a single article and has a nice URL. This is accomplished by taking advantage of default webserver index.html behaviour.</p>
 
   <figure>
-    <pre>
-PAGE 1          PAGE 2          PAGE 3 
-New Article!    Article 3       Article 6
-Article 1       Article 4       
-Article 2       Article 5       </pre>
+    <img src="/articles/i-made-a-blog/folder-structure.png" alt="Article folder structure" />
+    <figcaption>Permalink!</figcaption>
   </figure>
 
-  <p>Now I need to re-make page-1.html and page-2.html, and add page-3.html. Doing that by hand would not satisfy &ldquo;add new articles without doing a lot of work.&rdquo;</p>
+  <p><a href="/">The homepage</a> is a multi-article page. At the time of writing there is only one article, but articles will eventually be grouped in threes or fours on these pages when there are more of them.</p>
 
-  <p>Thankfully we have a computer. We just need three things from the computer:</p>
+  <h4>Compilation</h4>
 
-  <ul>
-    <li>An ordered list of articles</li>
-    <li>Some way to slice the list into threes</li>
-    <li>Some way to put three articles into a single document</li>
-  </ul>
+  <p>There is a rendering step, but it doesn't happen on the server - it happens on my development machine!</p>
 
-  <p>&ldquo;An ordered list of articles&rdquo; is a database. Time to install MySQL! Just kidding. Let's use a text file.</p>
+  <p>The content of this article, for example, sits in <strong>/articles/i-made-a-blog/article-content.html</strong>. A bash script concatenates it into the site template, and saves the resulting index.html into the permalink folder.</p>
 
-  <figure>
-    <figcaption><strong>articles-database</strong> (Plaintext)</figcaption>
-    <pre>/articles/new-article
-/articles/article-1
-/articles/article-2
-/articles/article-3
-/articles/article-4
-/articles/article-5
-/articles/article-6</pre>
-  </figure>
+  <p>A shoty copy of this article sits in <strong>/articles/i-made-a-blog/article-preview.html</strong>. The same script concatenates that preview and neighbouring article previews into multi-article pages like the homepage.</p>
 
-  <p>The directories I'm referencing in this text file will contain a file <strong>article.html</strong> which in turn contains article's contents.</p>
+  <p>Here's the meat of the script. The rest is cleanup and running cat to stick things together.</p>
 
-  <p>&ldquo;Some way to slice the list into consecutive threes&rdquo; sounds like programming. Let's come back to that. But &ldquo;some way to put three articles into a single document,&rdquo; is easy! That's just cat!</p>
-
-  <figure>
-    <figcaption><strong>render.sh</strong> (Bash)</figcaption>
-    <pre>cat $header $article1 $article2 $article3 $footer > page-1.html</pre>
-  </figure>
-
-  <p>cat can also build the permalink index.html file that sits in each article directory:</p>
-
-  <figure>
-    <figcaption><strong>render.sh</strong> (Bash)</figcaption>
-    <pre>cat $header $newArticle $footer > /articles/new-article/index.html</pre>
-  </figure>
-
-  <p>With that sorted out, I just need to loop over my database and build the multi-article pages.</p>
 
   <figure>
     <figcaption><strong>render.sh</strong> (Bash)</figcaption>
     <pre>render(){
   for articleDir in $database; do
-    currentArticleDir=$articleDir;
-    currentArticles="$currentArticles $currentArticleDir/article.html"
+    currentArticle=$articleDir;
+    currentArticles="$currentArticles $currentArticle/article-preview.html"
   
     let "articleIndex += 1"
     if [ `expr $articleIndex % $articlesPerPage` -eq 0 ]; then
@@ -141,15 +82,13 @@ Article 2       Article 5       </pre>
     buildCurrentPermalinkDocument
   done
 
-  # build the remainder articles
+  # build a multi-article page from the remainder articles
   if [ currentArticles != "" ]; then
     buildCurrentMultiArticleDocument
     currentArticles=""
   fi
 }</pre>
   </figure>
-
-  <p>Eventually I'll need to insert numbered links to pages. I'll cross that bridge when I get to article #4.</p>
 
   <h4>Independent</h4>
 
@@ -162,8 +101,8 @@ Article 2       Article 5       </pre>
 
   <p>Things are even better when we're talking about the server dependencies. Since all of the rendering happens on my development machine, the server only needs to be able to serve documents. In a race between installing Wordpress and installing this blog, this blog wins before anyone reaches for the starting gun.</p>
 
-  <p>Of course this wouldn't scale to anything one might call an 'app,' but I'm not making an app. I'm making a slowly growing static site. Respectfully.</p>
+  <p>Of course this wouldn't scale to anything one might call an 'app,' but I'm not making an app. I'm making a slowly growing static site.</p>
 
-  <footer>I wrote this January 17th, 2016. I was in Montreal.</footer>
+  <footer>I wrote this January 18th, 2016. I was in Montreal.</footer>
 
 </article>
