@@ -114,25 +114,43 @@ Article 2       Article 5       </pre>
   <p>&ldquo;Some way to slice the list into consecutive threes&rdquo; sounds like programming. Let's come back to that. But &ldquo;some way to put three articles into a single document,&rdquo; is easy! That's just cat!</p>
 
   <figure>
-    <pre>cat 
-/template/page-header.html
-/articles/new-article/article.html 
-/articles/article-1/article.html 
-/articles/article-2/article.html
-/template/page-footer.html
-> page-1.html</pre>
+    <figcaption>Bash</figcaption>
+    <pre>cat $header $article1 $article2 $article3 $footer > page-1.html</pre>
   </figure>
 
   <p>cat can also build the permalink index.html file that sits in each article directory:</p>
 
   <figure>
-    <pre>cat 
-/template/single-header.html
-/articles/new-article/article.html 
-/template/single-footer.html
-> /articles/new-article/index.html</pre>
+    <figcaption>Bash</figcaption>
+    <pre>cat $header $newArticle $footer > /articles/new-article/index.html</pre>
   </figure>
 
-  <footer>I wrote this 2016-1-17, in Montreal.</footer>
+  <p>With that sorted out, I just need to loop over my database and build the multi-article pages.</p>
+
+  <figure>
+    <figcaption>Bash</figcaption>
+    <pre>render(){
+  for articleDir in $database; do
+    currentArticleDir=$articleDir;
+    currentArticles="$currentArticles $currentArticleDir/article.html"
+  
+    let "articleIndex += 1"
+    if [ `expr $articleIndex % $articlesPerPage` -eq 0 ]; then
+      buildCurrentMultiArticleDocument
+      currentArticles=""
+    fi
+
+    buildCurrentPermalinkDocument
+  done
+
+  # build the remainder articles
+  if [ currentArticles != "" ]; then
+    buildCurrentMultiArticleDocument
+    currentArticles=""
+  fi
+}</pre>
+  </figure>
+
+  <footer>I wrote this January 17th, 2016. I was in Montreal.</footer>
 
 </article>
