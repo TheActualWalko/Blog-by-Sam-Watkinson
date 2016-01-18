@@ -31,10 +31,14 @@ html,body{
   padding:0;
 }
 
-.main-header h1{
+.main-header nav a.title{
   color:white;
   background-color:#555a7e;
   padding:15px 30px;
+  position:absolute;
+  left:0;
+  top:0;
+  margin-bottom:0;
 }
 
 .main-header h1,
@@ -44,10 +48,45 @@ html,body{
   display:inline-block;
 }
 
-.main-header nav a{
+.main-header nav a,
+.main-header nav span{
   padding:15px 0 1px 0;
   margin-right:30px;
   margin-bottom:13px;
+  display: inline-block;
+}
+
+.main-header nav a.active{
+  border-bottom:1px solid #555a7e;
+}
+
+.main-header nav span{
+  color:#aaa;
+}
+
+.main-header nav *{
+  white-space:nowrap;
+}
+
+@media screen and ( max-width:900px ){
+  .main-header nav a.title{
+    position:static;
+  }
+}
+
+@media screen and ( max-width:580px ){
+  .main-header nav a.title{
+    width:100%;
+    margin-left:0;
+  }
+  .main-header nav a,
+  .main-header nav span{
+    margin-left:15px;
+    margin-right:15px;
+  }
+  .main-header nav{
+    text-align: center;
+  }
 }
 
 a,
@@ -57,21 +96,23 @@ a:link{
   color:#555a7e;
 }
 
-.main-header nav a.active{
-  border-bottom:1px solid #555a7e;
+.main-header nav,
+article{
+  margin:0 auto;
+  width:540px;
 }
 
-.main-header nav{
-  position:absolute;
-  left:50%;
-  top:0;
-  margin-left:-270px;
-  width:540px;
+@media screen and ( max-width:580px ){
+  body{
+    padding:0 20px;
+  }
+  .main-header nav,
+  article{
+    width:100%;
+  }
 }
 
 article{
-  width:540px;
-  margin:0 auto;
   padding-bottom:30px;;
   border-top:1px solid #f0f0f0;
   font-size:0.9rem;
@@ -138,12 +179,20 @@ article p{
 }
 
 article figure{
+  width:560px;
   margin:0;
   margin-top:20px;
   padding:0;
   position:relative;
-  width:560px;
   margin-left:-10px;
+}
+
+
+@media screen and ( max-width:580px ){
+  article figure{
+    width:100%;
+    margin-left:0;
+  }
 }
 
 article figure img,
