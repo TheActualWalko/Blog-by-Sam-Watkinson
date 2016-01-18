@@ -1,7 +1,7 @@
 #!/bin/bash
 database=`cat articles-database`
 
-publicDir="public"
+publicDir="compiled"
 
 permaSuffix="/index.html"
 previewDocName="preview-content.html"
