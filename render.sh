@@ -7,8 +7,8 @@ permaSuffix="/index.html"
 previewDocName="preview-content.html"
 articleDocName="/article-content.html"
 
-permaTopTemplate="templates/perma-top.html"
-permaBottomTemplate="templates/perma-bottom.html"
+permaTopTemplate="templates/page-top.html"
+permaBottomTemplate="templates/page-bottom.html"
 pageTopTemplate="templates/page-top.html"
 pageBottomTemplate="templates/page-bottom.html"
 
@@ -62,8 +62,10 @@ clean(){
   `mkdir $publicDir`
   `mkdir $publicDir/page`
   `cp -R articles $publicDir/articles`
+  `cp -R images $publicDir/images`
   `cp -R css $publicDir/css`
   `cp -R fonts $publicDir/fonts`
+  `cp -R scripts $publicDir/scripts`
 }
 
 clean

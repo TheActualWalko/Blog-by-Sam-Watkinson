@@ -19,12 +19,11 @@
 
   <p>There is no server-side rendering. There is no content management system. The only things that runs on the server are the operating system and the webserver.</p>
 
-  <p>There is no client-side behaviour. No javascript.</p>
+  <p>There is no client-side behaviour. No javascript<sup>1</sup>.</p>
 
   <figure>
     <figcaption><strong>articles/i-made-a-blog/article-content.html</strong> (HTML)</figcaption>
-    <pre>
-&lt;article&gt;
+    <pre><code class="language-html">&lt;article&gt;
         
   &lt;header&gt;
     &lt;a href="/articles/i-made-a-blog"&gt;&lt;h2&gt;I made a blog.&lt;/h2&gt;&lt;/a&gt;
@@ -39,10 +38,10 @@
 
   &lt;p&gt;This post is about my first such project: this blog, and the tiny platform it runs on. I have taken on more invigorating projects, but few so pleasingly minimal.&lt;/p&gt;
 
-&lt;/article&gt;</pre>
+&lt;/article&gt;</code></pre>
   </figure>
 
-  <p>Articles are written in raw HTML. All article styling is done without classes, which makes writing raw HTML pretty smooth. Article contents are compiled into the multi-article pages and permalink pages that make up the site.</p>
+  <p>Articles are written in raw HTML. All article styling is done without classes, which makes writing raw HTML quite smooth. Content from articles is compiled into the multi-article pages and permalink pages that make up the site.</p>
 
   <h4>Permalinks and Multi-Article Pages</h4>
 
@@ -67,7 +66,7 @@
 
   <figure>
     <figcaption><strong>render.sh</strong> (Bash)</figcaption>
-    <pre>buildCurrentPermalinkDocument(){
+    <pre><code class="language-bash">buildCurrentPermalinkDocument(){
   file=$currentDir/article-content.html
   `cat $pageStart $file $pageEnd > $currentDir/index.html`
 }
@@ -79,6 +78,7 @@ buildCurrentMultiArticleDocument(){
 }
 
 render(){
+  # $database is a text file which lists article dirs
   for articleDir in $database; do
     currentDir=$articleDir;
     currentArticles="$currentArticles $currentDir/article-preview.html"
@@ -97,10 +97,10 @@ render(){
     buildCurrentMultiArticleDocument
     currentArticles=""
   fi
-}</pre>
+}</code></pre>
   </figure>
 
-  <p>This spits out the complete state of my blog! Then rsync moves it to the server, and I'm done.</p>
+  <p>This spits out the complete state of my blog! Then rsync moves it to the server. Done.</p>
 
   <h4>Independent</h4>
 
@@ -113,8 +113,13 @@ render(){
 
   <p>Things are even better when we're talking about the server dependencies. Since all of the rendering happens on my development machine, the server only needs to be able to serve documents. In a race between installing Wordpress and installing this blog, this blog wins before anyone reaches for the starting gun.</p>
 
-  <p>Of course this wouldn't scale to anything one might call an &ldquo;app,&rdquo; but I'm not making an app! I'm making a slowly growing static site.</p>
+  <p>Of course this wouldn't scale to anything one might call an &ldquo;app,&rdquo; but I'm not making an app! I'm making a slowly growing static site, and this method ought to handle that just fine.</p>
 
-  <footer>I wrote this January 18th, 2016. I was in Montreal.</footer>
+  <footer>
+    <p><em>I wrote this January 18th, 2016. I was in Montreal.</em></p>
+    <p><sup>1</sup> &ldquo;There is no client-side behaviour. No javascript.&rdquo;</p>
+    <p>At the time of writing, this was true. I have since added syntax highlighting with <a href="http://prismjs.com/">prism.js</a>. I plan to eventually move syntax highlighting to the dev machine compilation.</p>
+
+  </footer>
 
 </article>

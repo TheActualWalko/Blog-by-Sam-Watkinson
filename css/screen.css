@@ -222,6 +222,7 @@ article figure pre{
   background-color:#f0f0f0;
   color:#2b2d40;
   white-space:pre-wrap;
+  font-size:0.8rem;
 }
 
 article figure figcaption+pre{
@@ -254,5 +255,8 @@ article figure+h4{
 article footer{
   margin-top:30px;
   color:#80818c;
-  font-style:italic;
+}
+
+article footer+*{
+  margin-top:30px;
 }
