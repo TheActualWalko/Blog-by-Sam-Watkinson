@@ -61,6 +61,7 @@ clean(){
   `rm -r $publicDir`
   `mkdir $publicDir`
   `mkdir $publicDir/page`
+  `cp -R contact-me $publicDir/contact-me`
   `cp -R articles $publicDir/articles`
   `cp -R images $publicDir/images`
   `cp -R css $publicDir/css`

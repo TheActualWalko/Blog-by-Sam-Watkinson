@@ -113,6 +113,7 @@ article{
 }
 
 article{
+  padding-top:30px;
   padding-bottom:30px;
   border-top:1px solid #f0f0f0;
   font-size:0.9rem;
@@ -133,6 +134,7 @@ article>a{
 }
 
 article header{
+  margin-top:0px;
   margin-bottom:0px;
 }
 
@@ -185,6 +187,20 @@ article figure{
   padding:0;
   position:relative;
   margin-left:-10px;
+}
+
+article dl dt{
+  margin:0;
+  padding:0;
+  width:20%;
+  display:inline-block;
+}
+
+article dl dd{
+  margin:0;
+  padding:0;
+  display:inline-block;
+  width:78%;
 }
 
 
@@ -267,6 +283,8 @@ article footer dl{
 
 article footer dt,
 article footer dd{
+  display:block;
+  width:auto;
   margin:0;
   padding:0;
 }
