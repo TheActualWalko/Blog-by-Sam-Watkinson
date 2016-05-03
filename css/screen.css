@@ -218,6 +218,7 @@ article dl dd{
   }
 }
 
+article figure a,
 article figure img,
 article figure iframe,
 article figure object,
@@ -227,6 +228,7 @@ article figure canvas{
   border-radius:3px;
 }
 
+article figure a+figcaption,
 article figure img+figcaption,
 article figure iframe+figcaption,
 article figure object+figcaption,
