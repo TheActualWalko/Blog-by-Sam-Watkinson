@@ -189,17 +189,24 @@ article figure{
   margin-left:-10px;
 }
 
+article ol li{
+  margin-bottom:5px;
+}
+
 article dl dt{
-  margin:0;
+  font-weight:600;
+  margin:0 0 5px 0;
   padding:0;
   width:20%;
   display:inline-block;
+  vertical-align: top;
 }
 
 article dl dd{
-  margin:0;
+  margin:0 0 5px 0;
   padding:0;
   display:inline-block;
+  vertical-align: top;
   width:78%;
 }
 
