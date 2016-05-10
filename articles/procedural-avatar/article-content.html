@@ -13,7 +13,7 @@
 
   <h4>Fish</h4>
 
-  <p>In the beginning, we called them &lsquo;fish,&rsquo; as our original vision came from <a href="http://www.jenovachen.com/flowingames/flowing.htm">the classic acqueous Flash game <em>Flow</em></a>.</p>
+  <p>In the beginning, we called them &lsquo;fish&rsquo;, since our original vision came from <a href="http://www.jenovachen.com/flowingames/flowing.htm">the classic acqueous Flash game <em>Flow</em></a>.</p>
 
   <p>As Flow shows us, an abundance of character and personality can be expressed using only lines and hollow circles, if they move right. It&rsquo;s also easy to tell a computer how to draw these things, and thus easy to play and experiment with the drawing process.</p>
 
@@ -38,9 +38,9 @@
     <figcaption>~Fancybranch~</figcaption>
   </figure>
 
-  <p>The nodes that make up the branch are not always circles - sometimes they&rsquo;re vertices that split off into a pair of symmetrical and roughly-perpendicular sub-branches. These sub-branches follow the same definition as our &lsquo;root&rsquo; branch: they are a row of either circles or symmetrical pairs of smaller sub-sub-branches.</p>
+  <p>The nodes that make up the branch are not always circles - sometimes they&rsquo;re vertices that split off into a pair of symmetrical sub-branches roughly perpendicular to the root. These sub-branches follow the same definition as our &lsquo;root&rsquo; branch: they are a row of either circles or symmetrical pairs of smaller sub-sub-branches.</p>
 
-  <p>With these rules, we can build a good variety of Avatar-fish.</p>
+  <p>With these rules, we can build a good variety of avatar-fish.</p>
 
   <figure>
     <img src="/articles/procedural-avatar/basic-fish-examples.png" alt="Several basic fish, constructed from relatively simple branches." />
@@ -59,7 +59,7 @@
   </figure>
 
   <p>
-    There are four values that describe a avafish<sup>2</sup> branch:
+    There are four values that describe an avafish<sup>2</sup> branch:
     <dl>
       <dt>numCells</dt>
       <dd>The number of circle/sub-branch nodes on the root branch.</dd>
@@ -97,28 +97,28 @@
     <li>Build a simple branch (circles only) with the right number of cells.</li>
     <li>Choose energy for your cells (using <strong>cycle1</strong> &amp; <strong>cycle2</strong>) that add up to the amount of energy allocated for this branch.</li>
     <li>Convert the biggest cell into a pair of sub-branches, each with one-half the cell&rsquo;s energy, with <strong>numCells</strong> and <strong>numBranches</strong> in the same proportion as sub-branch energy to root-branch energy, and go to <strong>2</strong> to define them, until we have the right number of sub-branch cells.</li>
-    <li>Draw the remaining cells as circles with radius determined by energy</li>
+    <li>Draw the remaining cells as circles with radii determined by energy</li>
   </ol>
 
   <p>This is the result:</p>
 
   <figure>
     <a href="/articles/procedural-avatar/montreal-avatars.png"><img src="/articles/procedural-avatar/montreal-avatars.png" alt="Friends, avatar'd" /></a>
-    <figcaption>It's so you! <sup>3</sup> <a href="/articles/procedural-avatar/montreal-avatars.png"><strong>(Expand)</strong></a></figcaption>
+    <figcaption>Names used as seeds. Yours is so you! <sup>3</sup> <a href="/articles/procedural-avatar/montreal-avatars.png"><strong>(Expand)</strong></a></figcaption>
   </figure>
 
   <p>In a coming post, we&rsquo;ll zoom out and provide context for these little creations.</p>
 
   <footer>
     
-    <p><em>I wrote this May 2nd, 2016. I was flying from Gabriola Island, BC to Montreal, QC</em></p>
+    <p><em>I wrote this May 2nd, 2016. I was flying from Gabriola Island, BC to Montreal, QC.</em></p>
 
     <dl>
       <dt><sup>1</sup> &ldquo;we&rdquo;</dt>
       <dd>Me and Amiani!</dd>
       <dt><sup>2</sup> &ldquo;avafish&rdquo;</dt>
       <dd>...fishatar?</dd>
-      <dt><sup>3</sup> &ldquo;It&rsquo;s so you!&rdquo;</dt>
+      <dt><sup>3</sup> &ldquo;Yours is so you!&rdquo;</dt>
       <dd>Avatars subject to change. New avatars will also be very you.</dd>
     </dl>
 
