@@ -65,7 +65,6 @@ clean(){
   `cp -R articles $publicDir/articles`
   `cp -R images $publicDir/images`
   `cp -R css $publicDir/css`
-  `cp -R fonts $publicDir/fonts`
   `cp -R scripts $publicDir/scripts`
 }
 
