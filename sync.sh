@@ -1,2 +1,2 @@
 #!/bin/bash
-rsync -a ./compiled/ root@sam-watkinson.com:/var/www/
+cd ./compiled; scp -r ./* root@sam-watkinson.com:/var/www/sam-watkinson/public; cd ..

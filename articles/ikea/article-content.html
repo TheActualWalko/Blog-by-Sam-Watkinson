@@ -1,0 +1,125 @@
+<article>
+        
+  <header>
+    <a href="/articles/ikea"><h2>Ikea</h2></a>
+    <h3>Small Data meets Big Furniture</h3>
+  </header>
+
+  <h4>Premise</h4>
+
+  <p>I was able to scrape 3311 Ikea products from their website this morning. Afterwards I built <a href="/ikea/">this silly Ikea browser</a>. This blog post is a lil walkthrough of that process!</p>
+
+  <h4>Step 1: Research!</h4>
+
+  <p>I spent about ten seconds checking to make sure this dataset wasn't already publicly available. (I was secretly hoping I would get to scrape Ikea, so I really didn't try very hard.) My one google search on the subject turned up this page in Ikea's website: <a href="http://www.ikea.com/us/en/catalog/productsaz/0/">http://www.ikea.com/us/en/catalog/productsaz/0/</a></p>
+
+  <p>That page is the first of 26 listing all ikea products by name. Somewhere in the source for that page, you'll find this:</p>
+
+  <figure>
+    <figcaption><strong>view-source:www.ikea.com/.../productsaz/0/</strong> (HTML)</figcaption>
+    <pre><code class="language-html">&lt;div class="productsAzColumnFirst"&gt;
+  &lt;div class="textContainer"&gt;
+
+    &lt;span class="productsAzLink"&gt;
+      &lt;a href="/us/en/.../10219178/"&gt;ADDE chair&lt;/a&gt;
+    &lt;/span&gt;
+
+    &lt;span class="productsAzLink"&gt;
+      &lt;a href="/us/en/.../90214285/"&gt;ADDE chair&lt;/a&gt;
+    &lt;/span&gt;
+
+    &lt;span class="productsAzLink"&gt;
+      &lt;a href="/us/en/.../90298713/"&gt;ADMETE chair pad&lt;/a&gt;
+    &lt;/span&gt;
+
+    ...</code></pre>
+  </figure>
+
+  <h4>Step 2: Get a list of product URLs</h4>
+
+  <p>We're going to have to scrape all of those URLs from similar elements on the other 25 pages too. Let's get a node script going.</p>
+
+  <figure>
+    <figcaption><strong>scrape-links-from-az.js</strong> (Javascript)</figcaption>
+    <pre><code class="language-javascript">const request = require("request");
+const productURLs = [];
+for (let i = 0; i < 25; i ++) {
+  request.get(`http://www.ikea.com/us/en/catalog/productsaz/${i}`, (err, response, body)=>{
+    body
+      .split('\n')
+      .filter(line => line.includes('class="productsAzLink"'))
+      .map(line => line.split('&lt;a href="')[1].split('"')[0])
+      .forEach(url => productURLs.push(url));
+  });
+}</code></pre>
+  </figure>
+
+  <p>The naive procedure I went for here isn't too scary:</p>
+  <ol>
+    <li>Grab all 26 pages, then</li>
+    <li>find all the lines that contain <strong>class="productsAzLink"</strong>, and finally</li>
+    <li>find the URL in each of them them!</li>
+  </ol>
+
+  <h4>Step 3: Cleanup</h4>
+
+  <p>Cool! We have a URL for each thing you can purchase from Ikea.</p>
+
+  <p>If you look at those URLs though, you'll notice some oddities. Most of the results look like <strong>/us/en/catalog/products/50233549/</strong>, but the number in the URL is sometimes prefixed with an 'S', like in <strong>/us/en/catalog/products/S49184045/</strong>. Others are even more different, with URLs like <strong>/us/en/catalog/categories/departments/bedroom/11468/</strong>.</p>
+
+  <p>If you look at the contents of those pages, it's clear that they're not individual Ikea products. Some lead to pages representing an entire category, while others are package deals, like a set of chairs and a table sold together. I removed those by hand with a couple multi-selects.</p>
+
+  <figure>
+    <img src="/articles/ikea/multi-select.gif" alt="Animation of multi-select editing." />
+    <figcaption>I mainly do multi-selects when I want to impress girls</figcaption>
+  </figure>
+
+  <h4>Step 4: Turn product links into product data</h4>
+
+  <p>What was left was 3311 links to single-product Ikea pages! Now we're getting somewhere.</p>
+
+  <p>To get at our actual data, I again popped open one of the links at random. My first instinct was to pull out width/height/price etc from HTML elements on the rendered page, but upon viewing the source I found a nice little gift.</p>
+
+  <p>Check out line 1478 at <a href="view-source:http://www.ikea.com/us/en/catalog/products/50043573/">view-source:www.ikea.com/.../50043573/</a></p>
+
+  <figure>
+    <figcaption><strong>view-source:www.ikea.com/.../50043573/ Line 1478</strong> (Javascript)</figcaption>
+    <pre><code class="language-javascript">var jProductData = {
+  ... // all the basic product data we could possibly want
+};</code></pre>
+  </figure>
+
+  <p>Jackpot! Ikea's got this information in some inlined javascript at the bottom of the page. Turns out this is true for all products!</p>
+
+  <p>We have the target coordinates. We have a bunch of URLs. It's time to get scraping.</p>
+
+  <figure>
+    <figcaption><strong>scrape-data-from-links.js</strong> (Javascript)</figcaption>
+    <pre><code class="language-javascript">const getProductBlob = x=&gt;x
+  .split('var jProductData = ')[1] // split before the JS object starts
+  .split('var jsonProduct')[0] // split on the line after the JS object ends
+  .trim()
+  .slice(0,-1);  // cut the ; off the end
+
+const outputFilename = 'ikea.json';
+fs.writeFileSync(outputFilename, '[');
+
+// requestSequential makes the get requests
+// and runs this callback on each result as they come in
+requestSequential(productURLs, (singleResult, index)=&gt;{
+  const blob = getProductBlob(singleResult)
+  index === 0
+    ? fs.appendFileSync(outputFilename, blob)
+    : fs.appendFileSync(outputFilename, ','+blob);
+}).then(()=&gt;fs.appendFileSync(outputFilename, ']'))</code></pre>
+  </figure>
+
+  <p>With some crafty use of <strong>.split</strong> (this blogger does not have time to wrestle with regex) we can pull out the objects as JSON and pump 'em right into a new file. 3311 HTTP requests later, we've successfully raised the eyebrows of Ikea IT and collected a nice little database of houseware products.</p>
+
+  <footer>
+    
+    <p><em>I wrote this May 13th, 2017. I was in New York City.</em></p>
+
+  </footer>
+
+</article>
