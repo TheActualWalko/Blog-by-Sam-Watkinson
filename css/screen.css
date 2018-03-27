@@ -8,8 +8,7 @@ html,body{
   padding:0;
   margin:0;
   color:#555a7e;
-  overflow: -moz-scrollbars-vertical; 
-  overflow-y: scroll;
+  font-size: 120%;
 }
 
 .main-header{
@@ -55,13 +54,13 @@ html,body{
   white-space:nowrap;
 }
 
-@media screen and ( max-width:900px ){
+@media screen and ( max-width:940px ){
   .main-header nav a.title{
     position:static;
   }
 }
 
-@media screen and ( max-width:580px ){
+@media screen and ( max-width:620px ){
   .main-header nav a.title{
     width:100%;
     margin-left:0;
@@ -89,7 +88,7 @@ article{
   width:540px;
 }
 
-@media screen and ( max-width:580px ){
+@media screen and ( max-width:620px ){
   body{
     padding:0 20px;
   }
@@ -164,7 +163,6 @@ article h4{
 
 article p{
   margin:15px 0;
-  text-align:justify;
 }
 
 article figure{
